@@ -1,0 +1,52 @@
+Sub main()
+
+'Set the sheets that will be used.
+Dim CoordSheet As Worksheet
+Set CoordSheet = ThisWorkbook.Sheets("pixel_coordinates")
+
+Dim CoordSort As Worksheet
+Set CoordSort = ThisWorkbook.Sheets("Sorted Coords")
+
+Dim DepthSheet As Worksheet
+Set DepthSheet = ThisWorkbook.Sheets("Depths")
+
+
+'Declare CellText as a string incase there are numbers within cell.
+Dim CellText As String
+Dim CellArray() As String
+
+
+
+'Determine How many columns are in the sheet.
+LastCol = CoordSheet.UsedRange.Columns.Count
+
+'Determing how many rows are in the sheet.
+LastRow = CoordSheet.UsedRange.Rows.Count
+
+
+
+For y = 2 To LastRow
+'Begin the loop to work through sheet copying the results that match the criteria.
+'Note: Need to make it LstCol - 1, or find a way to only count the second row for column numbers. Is skewed from the titles.
+
+    For x = 5 To LastCol - 1
+        'Select text in the Xth row and 11th coloumn
+        CellText = CoordSheet.Cells(y, x).Text
+        CellArray = Split(CellText, "-")
+    
+        CoordSort.Cells(x, y * 2 - 1) = CellArray(0)
+        CoordSort.Cells(x, y * 2) = CellArray(1)
+
+
+    Next x
+Next y
+
+
+
+
+For y = 2 To LastRow
+    CellText = CoordSheet.Cells(y, 3).Text
+    DepthSheet.Cells(y + 3, 1) = CellText
+Next y
+
+End Sub
